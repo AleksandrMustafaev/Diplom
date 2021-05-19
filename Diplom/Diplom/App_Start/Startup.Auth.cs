@@ -15,6 +15,7 @@ using Microsoft.Owin.Cors;
 
 namespace Diplom
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public partial class Startup
     {
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
@@ -24,7 +25,8 @@ namespace Diplom
         // Дополнительные сведения о настройке аутентификации см. на странице https://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
         {
-            //app.UseCors(CorsOptions.AllowAll);//tyt
+            app.UseCors(CorsOptions.AllowAll);//tyt
+
             // Настройка контекста базы данных и диспетчера пользователей для использования одного экземпляра на запрос
             app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
