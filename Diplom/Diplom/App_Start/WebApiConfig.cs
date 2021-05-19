@@ -13,7 +13,7 @@ namespace Diplom
         public static void Register(HttpConfiguration config)
         {
             //config.EnableCors();
-            config.EnableCors();
+            //config.EnableCors();
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new System.Net.Http.Headers.MediaTypeHeaderValue("text/html"));
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream"));
             // Конфигурация и службы Web API

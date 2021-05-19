@@ -18,6 +18,8 @@ namespace Diplom
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
+            //context.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });  // <-- This is the line you need
+
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
             // Настройка логики проверки имен пользователей
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
