@@ -23,7 +23,7 @@ namespace Diplom.Controllers
 
         // GET api/<controller>/5
         [Route("Get/{id}")]
-        public async Task<KeyWordModels> Get(int id) => await new ApplicationDbContext().KeyWord.Where(k => k.Id == id).FirstOrDefaultAsync();
+        public async Task<KeyWordModels> Get(int id) => await new ApplicationDbContext().KeyWord.Where(k => k.Id == id).Include(k => k.Publications).FirstOrDefaultAsync();
 
         // POST api/<controller>
         //public void Post([FromBody] string value)

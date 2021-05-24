@@ -22,25 +22,29 @@ namespace Diplom.Controllers
         // GET api/<controller>
         [Route("Get")]
         [HttpGet]
-        public async Task<IEnumerable<PublicationModels>> Get()
+        public async Task<PublicationWithUser> Get()
         {
-            return await new ApplicationDbContext().Publications
-                .Include(p=>p.Authors)
+            var userId = User.Identity.GetUserId();
+            var publications = await new ApplicationDbContext().Publications
+                .Include(p => p.Authors)
                 .Include(p => p.Conference)
-                .Include(p=>p.KeyWords)
+                .Include(p => p.KeyWords)
                 .Include(p => p.Descriptions)
                 .Include(p => p.PublicationType)
                 .Include(p => p.Publisher)
                 .Include(p => p.Journal)
                 .ToListAsync();
+            var user = await new ApplicationDbContext().Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
+            return new PublicationWithUser { publications = publications, User = user };
         }
 
         // GET api/<controller>/5
         [Route("Get/{id}")]
         [HttpGet]
-        public async Task<PublicationModels> Get(int id)
+        public async Task<PublicationWithUser> Get(int id)
         {
-            return await new ApplicationDbContext().Publications
+            var userId = User.Identity.GetUserId();
+            var publications = await new ApplicationDbContext().Publications
                 .Include(p => p.Authors)
                 .Include(p => p.Conference)
                 .Include(p => p.KeyWords)
@@ -49,7 +53,9 @@ namespace Diplom.Controllers
                 .Include(p => p.Publisher)
                 .Include(p => p.Journal)
                 .Where(p => p.Id == id)
-                .FirstOrDefaultAsync();
+                .ToListAsync();
+            var user = await new ApplicationDbContext().Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
+            return new PublicationWithUser { publications = publications, User = user };
         }
 
         // POST api/<controller>

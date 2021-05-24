@@ -270,6 +270,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\PublicationWithAuthorsViewModel.cs" />
+    <Compile Include="ViewModels\PublicationWithUser.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
