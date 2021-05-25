@@ -22,23 +22,29 @@ namespace Diplom.Controllers
         // GET api/<controller>
         [Route("Get")]
         [HttpGet]
-        public async Task<PublicationWithUser> Get()
+        public async Task<List<PublicationWithUser>> Get()
         {
-            var publications = await new ApplicationDbContext().Publications
-                .Include(p => p.Authors)
-                .Include(p => p.Conference)
-                .Include(p => p.KeyWords)
-                .Include(p => p.Descriptions)
-                .Include(p => p.PublicationType)
-                .Include(p => p.Publisher)
-                .Include(p => p.Journal)
-                .ToListAsync();
-            var users = new List<ApplicationUser>();
-            foreach (var item in publications)
+            List<PublicationWithUser> publicationWithUsers = new List<PublicationWithUser>();
+            using(ApplicationDbContext db = new ApplicationDbContext())
             {
-                users = await new ApplicationDbContext().Users.Where(u => u.Id == item.UserId).ToListAsync();
+                var publications = await db.Publications
+                    .Include(p => p.Authors)
+                    .Include(p => p.Conference)
+                    .Include(p => p.KeyWords)
+                    .Include(p => p.Descriptions)
+                    .Include(p => p.PublicationType)
+                    .Include(p => p.Publisher)
+                    .Include(p => p.Journal)
+                    .ToListAsync();
+                foreach (var item in publications)
+                {
+                    publicationWithUsers.Add(new PublicationWithUser { 
+                        Publication = item, 
+                        User = await db.Users.Where(u => u.Id == item.UserId).FirstOrDefaultAsync() 
+                    });
+                }
             }
-            return new PublicationWithUser { publications = publications, Users = users };
+            return publicationWithUsers;
         }
 
         // GET api/<controller>/5
@@ -46,18 +52,24 @@ namespace Diplom.Controllers
         [HttpGet]
         public async Task<PublicationWithUser> Get(int id)
         {
-            var publications = await new ApplicationDbContext().Publications
-                .Include(p => p.Authors)
-                .Include(p => p.Conference)
-                .Include(p => p.KeyWords)
-                .Include(p => p.Descriptions)
-                .Include(p => p.PublicationType)
-                .Include(p => p.Publisher)
-                .Include(p => p.Journal)
-                .Where(p => p.Id == id)
-                .ToListAsync();
-            var users = await new ApplicationDbContext().Users.Where(u => u.Id == publications[0].UserId).ToListAsync();
-            return new PublicationWithUser { publications = publications, Users = users };
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var publication = await db.Publications
+                    .Include(p => p.Authors)
+                    .Include(p => p.Conference)
+                    .Include(p => p.KeyWords)
+                    .Include(p => p.Descriptions)
+                    .Include(p => p.PublicationType)
+                    .Include(p => p.Publisher)
+                    .Include(p => p.Journal)
+                    .Where(p=>p.Id == id)
+                    .FirstOrDefaultAsync();
+                return new PublicationWithUser
+                {
+                    Publication = publication,
+                    User = await db.Users.Where(u => u.Id == publication.UserId).FirstOrDefaultAsync()
+                };
+            }
         }
 
         // POST api/<controller>
