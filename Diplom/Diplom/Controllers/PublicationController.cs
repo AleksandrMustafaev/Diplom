@@ -24,7 +24,6 @@ namespace Diplom.Controllers
         [HttpGet]
         public async Task<PublicationWithUser> Get()
         {
-            var userId = User.Identity.GetUserId();
             var publications = await new ApplicationDbContext().Publications
                 .Include(p => p.Authors)
                 .Include(p => p.Conference)
@@ -34,8 +33,12 @@ namespace Diplom.Controllers
                 .Include(p => p.Publisher)
                 .Include(p => p.Journal)
                 .ToListAsync();
-            var user = await new ApplicationDbContext().Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
-            return new PublicationWithUser { publications = publications, User = user };
+            var users = new List<ApplicationUser>();
+            foreach (var item in publications)
+            {
+                users = await new ApplicationDbContext().Users.Where(u => u.Id == item.UserId).ToListAsync();
+            }
+            return new PublicationWithUser { publications = publications, Users = users };
         }
 
         // GET api/<controller>/5
@@ -43,7 +46,6 @@ namespace Diplom.Controllers
         [HttpGet]
         public async Task<PublicationWithUser> Get(int id)
         {
-            var userId = User.Identity.GetUserId();
             var publications = await new ApplicationDbContext().Publications
                 .Include(p => p.Authors)
                 .Include(p => p.Conference)
@@ -54,8 +56,8 @@ namespace Diplom.Controllers
                 .Include(p => p.Journal)
                 .Where(p => p.Id == id)
                 .ToListAsync();
-            var user = await new ApplicationDbContext().Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
-            return new PublicationWithUser { publications = publications, User = user };
+            var users = await new ApplicationDbContext().Users.Where(u => u.Id == publications[0].UserId).ToListAsync();
+            return new PublicationWithUser { publications = publications, Users = users };
         }
 
         // POST api/<controller>

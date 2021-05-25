@@ -9,6 +9,6 @@ namespace Diplom.ViewModels
     public class PublicationWithUser
     {
         public virtual IEnumerable<PublicationModels> publications { get; set; }
-        public ApplicationUser User { get; set; }
+        public List<ApplicationUser> Users { get; set; }
     }
 }
