@@ -25,25 +25,24 @@ namespace Diplom.Controllers
         public async Task<List<PublicationWithUser>> Get()
         {
             List<PublicationWithUser> publicationWithUsers = new List<PublicationWithUser>();
-            using(ApplicationDbContext db = new ApplicationDbContext())
+            
+            var publications = await new ApplicationDbContext().Publications
+                .Include(p => p.Authors)
+                .Include(p => p.Conference)
+                .Include(p => p.KeyWords)
+                .Include(p => p.Descriptions)
+                .Include(p => p.PublicationType)
+                .Include(p => p.Publisher)
+                .Include(p => p.Journal)
+                .ToListAsync();
+            foreach (var item in publications)
             {
-                var publications = await db.Publications
-                    .Include(p => p.Authors)
-                    .Include(p => p.Conference)
-                    .Include(p => p.KeyWords)
-                    .Include(p => p.Descriptions)
-                    .Include(p => p.PublicationType)
-                    .Include(p => p.Publisher)
-                    .Include(p => p.Journal)
-                    .ToListAsync();
-                foreach (var item in publications)
-                {
-                    publicationWithUsers.Add(new PublicationWithUser { 
-                        Publication = item, 
-                        User = await db.Users.Where(u => u.Id == item.UserId).FirstOrDefaultAsync() 
-                    });
-                }
+                publicationWithUsers.Add(new PublicationWithUser { 
+                    Publication = item, 
+                    User = await new ApplicationDbContext().Users.Where(u => u.Id == item.UserId).FirstOrDefaultAsync() 
+                });
             }
+            
             return publicationWithUsers;
         }
 
@@ -52,24 +51,22 @@ namespace Diplom.Controllers
         [HttpGet]
         public async Task<PublicationWithUser> Get(int id)
         {
-            using (ApplicationDbContext db = new ApplicationDbContext())
+            var publication = await new ApplicationDbContext().Publications
+                .Include(p => p.Authors)
+                .Include(p => p.Conference)
+                .Include(p => p.KeyWords)
+                .Include(p => p.Descriptions)
+                .Include(p => p.PublicationType)
+                .Include(p => p.Publisher)
+                .Include(p => p.Journal)
+                .Where(p=>p.Id == id)
+                .FirstOrDefaultAsync();
+            return new PublicationWithUser
             {
-                var publication = await db.Publications
-                    .Include(p => p.Authors)
-                    .Include(p => p.Conference)
-                    .Include(p => p.KeyWords)
-                    .Include(p => p.Descriptions)
-                    .Include(p => p.PublicationType)
-                    .Include(p => p.Publisher)
-                    .Include(p => p.Journal)
-                    .Where(p=>p.Id == id)
-                    .FirstOrDefaultAsync();
-                return new PublicationWithUser
-                {
-                    Publication = publication,
-                    User = await db.Users.Where(u => u.Id == publication.UserId).FirstOrDefaultAsync()
-                };
-            }
+                Publication = publication,
+                User = await new ApplicationDbContext().Users.Where(u => u.Id == publication.UserId).FirstOrDefaultAsync()
+            };
+            
         }
 
         // POST api/<controller>
