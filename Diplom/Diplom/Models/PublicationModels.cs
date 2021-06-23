@@ -27,7 +27,7 @@ namespace Diplom.Models
         public string Text { get; set; }
         [Display(Name = "Язык")]
         public string Language { get; set; }
-        //[Required]
+        [Required]
         [Display(Name = "Id создателя публикации")]
         public string UserId { get; set; }
 

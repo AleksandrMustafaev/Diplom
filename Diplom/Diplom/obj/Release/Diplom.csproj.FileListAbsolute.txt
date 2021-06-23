@@ -149,10 +149,10 @@ D:\VisualProject\GIT\Diplom\Diplom\Diplom\Diplom\bin\ru\Microsoft.Owin.Security.
 D:\VisualProject\GIT\Diplom\Diplom\Diplom\Diplom\bin\ru\Microsoft.Owin.Security.Twitter.resources.dll
 D:\VisualProject\GIT\Diplom\Diplom\Diplom\Diplom\bin\ru\Microsoft.Owin.Security.MicrosoftAccount.resources.dll
 D:\VisualProject\GIT\Diplom\Diplom\Diplom\Diplom\bin\ru\System.Web.Http.Owin.resources.dll
-D:\VisualProject\GIT\Diplom\Diplom\Diplom\Diplom\obj\Release\Diplom.csprojAssemblyReference.cache
 D:\VisualProject\GIT\Diplom\Diplom\Diplom\Diplom\obj\Release\Diplom.Migrations.Create.resources
 D:\VisualProject\GIT\Diplom\Diplom\Diplom\Diplom\obj\Release\Diplom.csproj.GenerateResource.cache
 D:\VisualProject\GIT\Diplom\Diplom\Diplom\Diplom\obj\Release\Diplom.csproj.CoreCompileInputs.cache
 D:\VisualProject\GIT\Diplom\Diplom\Diplom\Diplom\obj\Release\Diplom.csproj.CopyComplete
 D:\VisualProject\GIT\Diplom\Diplom\Diplom\Diplom\obj\Release\Diplom.dll
 D:\VisualProject\GIT\Diplom\Diplom\Diplom\Diplom\obj\Release\Diplom.pdb
+D:\VisualProject\GIT\Diplom\Diplom\Diplom\Diplom\obj\Release\Diplom.csproj.AssemblyReference.cache
